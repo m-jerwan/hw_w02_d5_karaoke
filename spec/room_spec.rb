@@ -38,5 +38,9 @@ class TestRoom < MiniTest::Test
     assert_equal(expected, actual)
   end
 
-
+  def test_add_songs
+    expected = "Hey Jude"
+    actual =
+    assert_equal(expected, actual)
+  end
 end

@@ -1,6 +1,7 @@
 require_relative ("song.rb")
 
 class SongDatabase
+  attr_reader :songs
 
   def initialize
 
@@ -9,17 +10,15 @@ class SongDatabase
       "Queen",
       "I want to break free,
       I want to break free
-      I want to break free from your lies",
-      101010110101001101011010)
+      I want to break free from your lies")
     @song_02 = Song.new(
         "More than this",
         "Roxy Music",
         "I could feel at the time,
         There was no way of knowing,
-        Fallen leaves in the night",
-        10101011001011010)
+        Fallen leaves in the night")
       @songs = [@song_01, @song_02]
-      
+
   end
 
 
