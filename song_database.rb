@@ -1,7 +1,7 @@
 require_relative ("song.rb")
 
 class SongDatabase
-  attr_reader :songs
+  attr_reader :all_songs
 
   def initialize
 
@@ -17,7 +17,8 @@ class SongDatabase
         "I could feel at the time,
         There was no way of knowing,
         Fallen leaves in the night")
-      @songs = [@song_01, @song_02]
+
+      @all_songs = [@song_01, @song_02]
 
   end
 
@@ -26,10 +27,12 @@ class SongDatabase
     return @title
   end
 
-  def access_song(song_number)
-    index_number = song_number - 1
-    return @songs[index_number]
-  end
+  # def access_song(song_number)
+  #   index_number = song_number - 1
+  #   return @songs[index_number]
+  # end
+
+
 
 
 

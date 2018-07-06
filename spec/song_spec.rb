@@ -23,7 +23,7 @@ class TestGuest < MiniTest::Test
   def test_check_song_title
 
     expected = "More than this"
-    assert_equal(expected, @song_02.check_song_title)
+    assert_equal(expected, @song_02.title)
 
   end
 

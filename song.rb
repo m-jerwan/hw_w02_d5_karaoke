@@ -1,20 +1,12 @@
 
 class Song
 
-attr_reader :title, :artist, :lyrics, :music
+attr_reader :title, :artist, :lyrics
 
   def initialize(title, artist, lyrics)
     @title = title
     @aritst = artist
     @lyrics = lyrics
   end
-
-
-  def check_song_title
-    return @title
-  end
-
-
-
 
 end

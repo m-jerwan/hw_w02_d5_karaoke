@@ -12,7 +12,7 @@ class TestSongDatabase < MiniTest::Test
 
   def test_access_song_1
     expected = "More than this"
-    assert_equal(expected, @test_database.access_song(2).check_song_title)
+    assert_equal(expected, @test_database.all_songs[1].title)
   end
 
 
