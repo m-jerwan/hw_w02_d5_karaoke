@@ -59,11 +59,11 @@ class Room
   end
   #---------------------------------FEES:
 
-    def room_charge
-      return 100 if @capacity >= 10
-      return 75 if @capacity >= 5
-      return 50 if @capacity >= 1
-    end
+  def room_charge
+    return 100 if @capacity >= 10
+    return 75 if @capacity >= 5
+    return 50 if @capacity >= 1
+  end
 
 
   ###------------------------------guests:
@@ -72,19 +72,19 @@ class Room
   end
 
   def add_guest(guest, room) #needs to pass ROOM to cant_afford
-      return "No money"  if guest.cant_afford?(room) # HOW TO AVOID THAT?
-      if  room.check_free_spaces == 0
-        @room_status = "#{room_name} room is Full"
-        return @room_status
-      elsif room.check_free_spaces == 1
-        @guests_in_room << guest
-        @room_status = "#{room_name} room is now Full"
-        return @room_status
-      else
-        @guests_in_room << guest
-        @room_status = "#{room_name} room has #{room.check_free_spaces} spaces left"
-        return @room_status
-      end
+    return "No money"  if guest.cant_afford?(room) # HOW TO AVOID THAT?
+    if  room.check_free_spaces == 0
+      @room_status = "#{room_name} room is Full"
+      return @room_status
+    elsif room.check_free_spaces == 1
+      @guests_in_room << guest
+      @room_status = "#{room_name} room is now Full"
+      return @room_status
+    else
+      @guests_in_room << guest
+      @room_status = "#{room_name} room has #{room.check_free_spaces} spaces left"
+      return @room_status
+    end
   end
 
   def remove_guest(guest)
@@ -97,9 +97,7 @@ class Room
 
   def whois_in_room_names
     guests_in_room_names = []
-    for guest in @guests_in_room
-      guests_in_room_names << guest.say_name
-    end
+    @guests_in_room.each {|guest| guests_in_room_names << guest.say_name }
     return guests_in_room_names
   end
 
@@ -108,12 +106,12 @@ class Room
   def songs_menu
     songs_menu_screen  =  "*----------------------*\n"
     counter = 1
-    for song in @song_database
-    songs_menu_screen += " #{counter}. #{song .title} \n"
-    counter += 1
-  end
+    @song_database.each { |song|
+      songs_menu_screen += " #{counter}. #{song .title} \n"
+      counter += 1
+    }
     songs_menu_screen += "*----------------------*"
-  return songs_menu_screen
+    return songs_menu_screen
   end
 
   def access_song_by_number(song_number)
@@ -122,9 +120,7 @@ class Room
   end
 
   def access_song_by_title(song_title)
-    for song in @song_database
-      return song if song_title == song.title
-    end
+    @song_database.each { |song| return song if song_title == song.title }
     return no_song = Song.new("'#{song_title}' is not in the database", "", "")
   end
 
@@ -134,9 +130,9 @@ class Room
   end
 
   def remove_song(song_title)
-    for song in @song_database
+    @song_database.each { |song|
       @song_database.delete(song) if song_title = song.title
-    end
+    }
   end
 
 
@@ -145,13 +141,13 @@ class Room
   def customer_orders(guest, what_is_ordered)
     for person in @guests_in_room
       if guest.say_name == person.say_name
-              guest.tab += what_is_ordered[:price]
-              return what_is_ordered[:price]
+        guest.tab += what_is_ordered[:price]
+        return what_is_ordered[:price]
       else
-         return 0
+        return 0
       end
     end
   end
 
-  
+
 end
