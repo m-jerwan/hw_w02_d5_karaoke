@@ -21,8 +21,8 @@ class TestGuest < MiniTest::Test
   end
 
   def test_can_afford?
-    actual = @guest_02.can_afford?(@mercury)
-    assert_equal(false, actual)
+    actual = @guest_02.cant_afford?(@mercury)
+    assert_equal(true, actual)
   end
 
 def test_cheer__have_song
@@ -32,7 +32,7 @@ end
 
 def test_cheer__no_fav_song
   actual = @guest_02.cheer(@mercury)
-  assert_equal("Macarena then!", actual)
+  assert_equal("Great...Macarena then!", actual)
 end
 
 

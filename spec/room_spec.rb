@@ -15,6 +15,13 @@ class TestRoom < MiniTest::Test
     @grande = Room.new("Ariana Grande", 5)
   end
 
+##-----------------------------------room:
+
+  def test_room_charge_rates
+    actual = @biber.room_charge
+    assert_equal(50, actual)
+  end
+
   ###------------------------------guests:
 
   def test_check_free_spaces
@@ -24,10 +31,8 @@ class TestRoom < MiniTest::Test
   def test_add_guest__there_is_space_and_have_money
     @mercury.add_guest(@guest_01, @mercury)
     @mercury.add_guest(@guest_03, @mercury)
-    expected = "Freedie Mercury room is Open, 8 spaces left"
-    actual = "#{@mercury.room_name} room is #{@mercury.room_status}, "
-    actual += "#{@mercury.check_free_spaces} spaces left"
-    assert_equal(expected,actual)
+    expected = "Freedie Mercury room has 8 spaces left"
+    assert_equal(expected, @mercury.room_status)
   end
 
   def test_add_guest__there_is_space_but_no_money
@@ -42,9 +47,8 @@ class TestRoom < MiniTest::Test
     @biber.add_guest(@guest_01, @biber)
     @biber.add_guest(@guest_01, @biber)
     actual = @biber.room_status
-    assert_equal("Full", actual)
+    assert_equal("Justin Biber room is Full", actual)
   end
-
 
   def test_remove_guest
     @mercury.add_guest(@guest_01, @mercury)
@@ -53,20 +57,41 @@ class TestRoom < MiniTest::Test
     assert_equal(9, @mercury.check_free_spaces)
   end
 
+
+  def test_whos_in_room_all_data # getting back all guest data
+    @mercury.add_guest(@guest_01, @mercury)
+    expected = "Bill Murray"
+    actual = @mercury.whois_in_room_all_data[0].say_name
+    assert_equal(expected, actual)
+  end
+
+  def test_whos_in_room_names #getting back names
+    @grande.add_guest(@guest_01, @grande)
+    @grande.add_guest(@guest_03, @grande)
+    expected = ["Bill Murray", "Fumihiro Hayashi"]
+    actual = @grande.whois_in_room_names
+    assert_equal(expected, actual)
+  end
+
   #---------------------------------songs:
 
-  def test_access_song  #checking proper conection to database
-    expected = "More than this" #by testing song title return
+  def test_show_songs_menu
+    expected = "*"  #have to test first letter as difficult testing all text
+    assert_equal(expected, @mercury.songs_menu[0])    #<<
+  end
+
+  def test_access_song    #accesing by song No
+    expected = "More than this"
     actual = @mercury.access_song_by_number(2).title
     assert_equal(expected, actual)
   end
 
-  def test_access_song_by_title
+  def test_access_song_by_title  #accesing by title
     expected = "More than this"
     actual = @mercury.access_song_by_title("More than this").title
     assert_equal(expected, actual)
   end
-  #--------------------songs read/write add: room method. should be database method?
+
   def test_add_song
     @biber.add_song("Hey Jude", "The Beatles","Hey Jude, hey Jude")
     expected = "Hey Jude"
@@ -74,29 +99,18 @@ class TestRoom < MiniTest::Test
     assert_equal(expected, actual)
   end
 
-  def test_remove_song  #adding, then removing Hey Joe, testing return error
+  def test_remove_song__return_error
     expected = "'The Beach' is not in the database"
     actual = @mercury.access_song_by_title("The Beach").title
     assert_equal(expected, actual)
   end
 
-  def test_room_charge
-    actual = @biber.room_charge
-    assert_equal(50, actual)
-  end
+
   ##------------------BAR:
 
   def test_check_drink_price__beer
     assert_equal(5, @mercury.drinks[0][:price])
   end
-
-  def test_whos_in_room
-    @mercury.add_guest(@guest_01, @mercury)
-    expected = "Bill Murray"
-    actual = @mercury.whois_in_room[0].say_name   #check by asking first guest name
-    assert_equal(expected, actual)
-  end
-
 
   def test_customer_orders__beer
     @mercury.add_guest(@guest_01, @mercury)

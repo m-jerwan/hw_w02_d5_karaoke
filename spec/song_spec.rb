@@ -11,20 +11,11 @@ class TestGuest < MiniTest::Test
       "I want to break free,
       I want to break free
       I want to break free from your lies")
-      @song_02 = Song.new(
-        "More than this",
-        "Roxy Music",
-        "I could feel at the time,
-        There was no way of knowing,
-        Fallen leaves in the night")
-
   end
 
   def test_check_song_title
-
-    expected = "More than this"
-    assert_equal(expected, @song_02.title)
-
+    expected = "I want to break free"
+    assert_equal(expected, @song_01.title)
   end
 
 

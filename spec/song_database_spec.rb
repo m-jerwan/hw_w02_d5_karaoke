@@ -15,6 +15,4 @@ class TestSongDatabase < MiniTest::Test
     assert_equal(expected, @test_database.all_songs[1].title)
   end
 
-
-
 end
