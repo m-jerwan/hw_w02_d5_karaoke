@@ -2,11 +2,16 @@
 
 class Guest
   attr_reader :fav_song
-
+  attr_accessor :tab
   def initialize(name, money, fav_song)
     @name = name
     @money = money
     @fav_song = fav_song
+    @tab = 0
+  end
+
+  def say_name
+    return @name
   end
 
 
