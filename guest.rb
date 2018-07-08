@@ -1,8 +1,10 @@
  require_relative ("room.rb")
 
 class Guest
+
   attr_reader :fav_song
   attr_accessor :tab
+
   def initialize(name, money, fav_song)
     @name = name
     @money = money
@@ -14,10 +16,8 @@ class Guest
     return @name
   end
 
-
   def can_afford?(room)
     room.room_charge > @money ? false : true
-
   end
 
 def sing(room, song_no)

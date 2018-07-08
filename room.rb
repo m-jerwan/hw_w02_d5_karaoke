@@ -17,45 +17,44 @@ class Room
 
   def initialize(room_name, capacity)
     @room_name = room_name
+    @capacity = capacity
     @guests_in_room = []
 
-    @capacity = capacity
     @free_spaces = @capacity - @guests_in_room.length  ##LEAVE AS IT IS
     @fee = nil  #on purpose!, by mistake you could charge £0, you cant charge £nil
 
     @songs_database = SongDatabase.new().all_songs
     #all rooms start with database of songs
-
-
     @room_status = "Open"
 
     ##------------------BAR:
     @beer = {
-      price: 5,
+      type: "beer",
+      price: 5
     }
     @whiskey = {
-      price: 7,
+      type: "whiskey",
+      price: 7
     }
     @water = {
-      price: 2,
+      type: "water",
+      price: 2
     }
     @drinks = [@beer, @whiskey, @water]
 
     @crisps = {
-      price: 2,
+      type: "crisps",
+      price: 2
     }
     @nachos = {
-      price: 8,
+      type: "nachos",
+      price: 8
     }
     @chilli = {
-      price: 5,
+      type: "chilli",
+      price: 5
     }
     @food = [@crisps, @nachos, @chilli]
-
-    #  @customer_tab =
-    #we've got all customerts in room in guests in room  array.
-    #change that to and array of hashes which are starting with
-    #customer name and 0 monies. as spending, we will update this array
 
   end
 
@@ -67,7 +66,7 @@ class Room
 
   def add_guest(guest, room)
     if guest.can_afford?(room)
-      if  @check_free_spaces == 0   ## THiS IS NOT WORKING, WHY??
+      if  room.check_free_spaces == 0
         @room_status = "Full"
         return "#{room_name} is #{room_status}"
       else
@@ -122,17 +121,14 @@ class Room
 
   #---------------------------------BAR:
 
-  def customer_orders_drink(guest, drink)
+  def customer_orders(guest, what_is_ordered)
     for person in @guests_in_room
       if guest.say_name == person.say_name
-              guest.tab += @beer[:price]
-              return @beer[:price]
+              guest.tab += what_is_ordered[:price]
+              return what_is_ordered[:price]
       else
          return 0
       end
-
-
-
     end
   end
 
