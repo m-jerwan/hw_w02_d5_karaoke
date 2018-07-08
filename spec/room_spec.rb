@@ -48,14 +48,14 @@ class TestRoom < MiniTest::Test
   end
 
 
-    def test_remove_guest
-      @mercury.add_guest(@guest_01, @mercury)
-      @mercury.add_guest(@guest_02, @mercury)
-      @mercury.remove_guest(@guest_02)
-      assert_equal(9, @mercury.check_free_spaces)
+  def test_remove_guest
+    @mercury.add_guest(@guest_01, @mercury)
+    @mercury.add_guest(@guest_02, @mercury)
+    @mercury.remove_guest(@guest_02)
+    assert_equal(9, @mercury.check_free_spaces)
   end
 
-#---------------------------------songs:
+  #---------------------------------songs:
 
   def test_access_song  #checking proper conection to database
     expected = "More than this" #by testing song title return
@@ -68,7 +68,7 @@ class TestRoom < MiniTest::Test
     actual = @mercury.access_song_by_title("More than this").title
     assert_equal(expected, actual)
   end
-#--------------------songs read/write add: room method. should be database method?
+  #--------------------songs read/write add: room method. should be database method?
   def test_add_song
     @biber.add_song("Hey Jude", "The Beatles","Hey Jude, hey Jude")
     expected = "Hey Jude"
@@ -79,7 +79,7 @@ class TestRoom < MiniTest::Test
   def test_remove_song  #adding, then removing Hey Joe, testing return error
     @mercury.add_song("Hey Jude", "The Beatles","Hey Jude, hey Jude")
     @mercury.remove_song("Hey Jude")
-    expected = "No song of this title stored"
+    expected = "'Hey Jude' is not in the database"
     actual = @mercury.access_song_by_title("Hey Jude").title
     assert_equal(expected, actual)
   end
@@ -88,6 +88,44 @@ class TestRoom < MiniTest::Test
     actual = @biber.room_charge
     assert_equal(75, actual)
   end
+  ##------------------BAR:
+
+  def test_check_drink_price__beer
+    assert_equal(5, @mercury.drinks[0][:price])
+  end
+
+  def test_whos_in_room
+    @mercury.add_guest(@guest_01, @mercury)
+    expected = "Bill Murray"
+    actual = @mercury.whois_in_room[0].say_name   #check by asking first guest name
+    assert_equal(expected, actual)
+  end
+
+
+  def test_customer_orders_drink__beer
+    @mercury.add_guest(@guest_01, @mercury)
+    actual = @mercury.customer_orders_drink(@guest_01, @beer)
+    assert_equal(5, actual)
+  end
+
+  def test_customer_orders_drink__beer__no_customer_like_this
+    @mercury.add_guest(@guest_01, @mercury)
+    actual = @mercury.customer_orders_drink(@guest_02, @beer)
+    assert_equal(0, actual)
+  end
+
+  def test_check_tab_guest_pay
+    @mercury.add_guest(@guest_01, @mercury)
+    @mercury.customer_orders_drink(@guest_01, @beer)
+    @mercury.customer_orders_drink(@guest_01, @beer)
+    @mercury.customer_orders_drink(@guest_01, @beer)
+    @mercury.customer_orders_drink(@guest_01, @beer)
+    assert_equal(20, @mercury.whois_in_room[0].tab)
+  end
+
+
+
+
 
 
 end
