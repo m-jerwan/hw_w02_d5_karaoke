@@ -23,7 +23,7 @@ class Room
     @free_spaces = @capacity - @guests_in_room.length  ##LEAVE AS IT IS
     @fee = nil  #on purpose!, by mistake you could charge £0, you cant charge £nil
 
-    @songs_database = SongDatabase.new().all_songs
+    @song_database = SongDatabase.new().all_songs
     #all rooms start with database of songs
     @room_status = "Open"
 
@@ -57,6 +57,13 @@ class Room
     @food = [@crisps, @nachos, @chilli]
 
   end
+  #---------------------------------FEES:
+
+    def room_charge
+      return 100 if @capacity >= 10
+      return 75 if @capacity >= 5
+      return 50 if @capacity >= 1
+    end
 
 
   ###------------------------------guests:
@@ -64,37 +71,58 @@ class Room
     return @free_spaces =  @capacity - @guests_in_room.length
   end
 
-  def add_guest(guest, room)
-    if guest.can_afford?(room)
+  def add_guest(guest, room) #needs to pass ROOM to cant_afford
+      return "No money"  if guest.cant_afford?(room) # HOW TO AVOID THAT?
       if  room.check_free_spaces == 0
-        @room_status = "Full"
-        return "#{room_name} is #{room_status}"
+        @room_status = "#{room_name} room is Full"
+        return @room_status
+      elsif room.check_free_spaces == 1
+        @guests_in_room << guest
+        @room_status = "#{room_name} room is now Full"
+        return @room_status
       else
         @guests_in_room << guest
+        @room_status = "#{room_name} room has #{room.check_free_spaces} spaces left"
+        return @room_status
       end
-    else
-      return "No money"
-    end
   end
 
   def remove_guest(guest)
-    @guests_in_room.delete(guest)     #<<<<potential enumaration
+    @guests_in_room.delete(guest)
   end
 
-  def whois_in_room
+  def whois_in_room_all_data
     @guests_in_room
   end
 
-  ###------------------------------songs:
-  #should they be methods of room or of database called by room?
+  def whois_in_room_names
+    guests_in_room_names = []
+    for guest in @guests_in_room
+      guests_in_room_names << guest.say_name
+    end
+    return guests_in_room_names
+  end
 
-  def access_song_by_number(song_number)  #method not used
+
+  ###------------------------------songs:
+  def songs_menu
+    songs_menu_screen  =  "*----------------------*\n"
+    counter = 1
+    for song in @song_database
+    songs_menu_screen += " #{counter}. #{song .title} \n"
+    counter += 1
+  end
+    songs_menu_screen += "*----------------------*"
+  return songs_menu_screen
+  end
+
+  def access_song_by_number(song_number)
     index_number = song_number - 1
-    return @songs_database[index_number]
+    return @song_database[index_number]
   end
 
   def access_song_by_title(song_title)
-    for song in @songs_database
+    for song in @song_database
       return song if song_title == song.title
     end
     return no_song = Song.new("'#{song_title}' is not in the database", "", "")
@@ -102,20 +130,13 @@ class Room
 
   def add_song(title, artist, lyrics)
     song = Song.new(title, artist, lyrics)
-    @songs_database << song
+    @song_database << song
   end
 
   def remove_song(song_title)
-    for song in @songs_database
-      @songs_database.delete(song) if song_title = song.title
+    for song in @song_database
+      @song_database.delete(song) if song_title = song.title
     end
-  end
-  #---------------------------------FEES:
-
-  def room_charge
-    return 100 if @capacity >= 10
-    return 75 if @capacity >= 5
-    return 50 if @capacity >= 1
   end
 
 
@@ -132,6 +153,5 @@ class Room
     end
   end
 
-
-
+  
 end

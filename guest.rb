@@ -11,13 +11,14 @@ class Guest
     @fav_song = fav_song
     @tab = 0
   end
+#----------------------------------
 
   def say_name
     return @name
   end
 
-  def can_afford?(room)
-    room.room_charge > @money ? false : true
+  def cant_afford?(room)
+    room.room_charge > @money ?  true : false
   end
 
 def sing(room, song_no)
@@ -30,7 +31,7 @@ def cheer(room)
    if @fav_song == room.access_song_by_title(@fav_song).title
      return   "Wow, lets sing then!"
    else
-     return "Macarena then!"
+     return "Great...Macarena then!"
    end
 end
 

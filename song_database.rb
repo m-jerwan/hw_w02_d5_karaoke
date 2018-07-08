@@ -22,18 +22,4 @@ class SongDatabase
 
   end
 
-
-  def check_song_title
-    return @title
-  end
-
-  # def access_song(song_number)
-  #   index_number = song_number - 1
-  #   return @songs[index_number]
-  # end
-
-
-
-
-
 end
